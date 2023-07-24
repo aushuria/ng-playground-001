@@ -1,16 +1,18 @@
 <h1>Playground</h1>
 
-<h3>Flat</h3>
-<div *ngFor="let user of users$ | async">
-  {{ user.name }}
-</div>
+<div *ngIf="data$ | async as data">
+  -----------------------------------
+  <div *ngFor="let user of data.user">
+    {{ user.name }}
+  </div>
+  -----------------------------------
+  <div *ngFor="let username of data.username">
+    {{ username }}
+  </div>
+  -----------------------------------
+  <div *ngFor="let user of data.filteredUsers">
+    {{ user.name }}
+  </div>
 
-<h3>Map Operator</h3>
-<div *ngFor="let username of username$ | async">
-  {{ username }}
-</div>
 
-<h3>Filter Operator</h3>
-<div *ngFor="let username of filteredUsers$ | async">
-  {{ username }}
 </div>
