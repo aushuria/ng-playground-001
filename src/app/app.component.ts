@@ -1,40 +1,42 @@
-import { Component } from '@angular/core';
-import { concatAll, concatMap, delay, exhaustMap, from, map, mergeMap, of, switchMap } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { Observable, concatAll, concatMap, delay, exhaustMap, from, map, mergeMap, observable, of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
-  //basic Map
-  foo$ = from([1, 2, 3, 4, 5]).pipe(map((item) => item * 10));
+  // Observable Constructor
+  // myObs = new Observable((observer) => {
+  //   console.log('Observable starts');
+  //   setTimeout(() => { observer.next('1') }, 1000)
+  //   setTimeout(() => { observer.next('2') }, 2000)
+  //   setTimeout(() => { observer.next('3') }, 3000)
+  //   // setTimeout(() => { observer.error(new Error('Something went wrong!')) }, 3000)
+  //   setTimeout(() => { observer.next('4') }, 4000)
+  //   setTimeout(() => { observer.next('5') }, 5000)
+  //   setTimeout(() => { observer.complete() }, 6000)
+  // })
 
-  constructor() {
-    // basic Map
-    // this.foo$.subscribe(item => console.log(item));
+  // Observable "of" operator
+  array1 = [1, 2, 3, 4, 5];
+  array2 = ['A', 'B', 'C', 'D', 'E'];
 
-    const example = (operator: any) => () => {
-      from([0, 1, 2, 3, 4])
-        .pipe(operator((x: any) => of(x).pipe(delay(500))))
-        .subscribe(
-          console.log,
-          () => {},
-          () => console.log(`${operator.name} completed`)
-          )
-    }
+  // myObs = of(this.array1, this.array2);
 
-    // mergeMap
-    // example(mergeMap)();
+  myObs = from(this.array1).pipe(
+    map((val) => val * 5)
+  );
 
-    // concatMap : wait prev variable completed
-    // example(concatMap)();
 
-    //switchMap: cancel any prev observable
-    // example(switchMap)();
-
-    //exhaustedMap: cancel next observable, until first observable compelete
-    example(exhaustMap)();
+  ngOnInit(): void {
+    this.myObs.subscribe(
+      (val) => { console.log(val) },
+      (error) => console.log(error.message),
+      () => console.log('Complete emitting value')
+      
+    )
   }
 }
